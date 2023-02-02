@@ -162,7 +162,7 @@
                 }
                 else
                 {
-                    warn("getNextChat - No more chat", element)
+                    // warn("getNextChat - No more chat", element)
                     return element
                 }
             }
@@ -300,6 +300,13 @@
             const currentRealTime = new Date()
             this.realTimeElapsedMS = currentRealTime.getTime() - this.realTimeStart.getTime()
             this.chatTimeCurrent = new Date(this.chatTimeStart.getTime() + this.realTimeElapsedMS * this.replaySpeed)
+
+            if (this.chatTimeCurrent.getTime() >= currentRealTime.getTime())
+            {
+                log("Replay reached current time")
+                this.realTimeStart = null
+                return
+            }
 
             if (this.currentChatElement)
             {

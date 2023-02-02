@@ -1,8 +1,8 @@
 # Discord Chat Replay
-Rewind past Discord Chat activity in realtime.
+Rewind past Discord chat activity in realtime.
 
 ## Usability Status
-Tampermonkey user script
+Tampermonkey script
 
 ## Features
 - Chat replay with speed multiplier

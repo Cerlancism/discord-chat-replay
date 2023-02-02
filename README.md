@@ -2,18 +2,18 @@
 Rewind past Discord Chat activity in realtime.
 
 ## Usability Status
-Tampermonkey Script  
+Tampermonkey user script
 
 ## Features
 - Chat replay with speed multiplier
 - Split view panel support
 
 ## How to use
-Load as Tampermonkey Script. In browser console:
+Load as Tampermonkey script. In browser console:
 
 **Start Replays**
 ```js
-chatReplay.startReplays(<Main chat message URL>, <Split Thread message URL (Optional)> | undefined, replaySpeed)
+chatReplay.startReplays(<Main chat message URL>, <Split panel message URL (Optional)> | undefined, replaySpeed)
 ```
 
 **Stop Replays**

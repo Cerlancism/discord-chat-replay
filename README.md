@@ -9,7 +9,7 @@ Tampermonkey Script
 - Split view panel support
 
 ## How to use
-In browser console
+Load as Tampermonkey Script. In browser console:
 
 **Start Replays**
 ```js
@@ -22,4 +22,5 @@ chatReplay.stopReplays()
 ```
 
 ## Demo
-TBD
+https://user-images.githubusercontent.com/28769707/216288166-a9ef319d-2400-4941-92ec-0eaa3c774be4.mp4
+

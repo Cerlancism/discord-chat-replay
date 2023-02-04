@@ -4,58 +4,8 @@
 {
     'use strict';
     // Your code here...
-    //#region Tagged Loggers
-    /**
-     * @param {any[]} args
-     */
-    function _log(logger = console.log, ...args)
-    {
-        logger("[ChatReplay]", ...args)
-    }
-    /**
-     * @param {any[]} args
-     */
-    function log(...args)
-    {
-        _log(console.log, ...args)
-    }
-    /**
-     * @param {any[]} args
-     */
-    function info(...args)
-    {
-        _log(console.info, ...args)
-    }
-    /**
-     * @param {any[]} args
-     */
-    function warn(...args)
-    {
-        _log(console.warn, ...args)
-    }
-    /**
-     * @param {any[]} args
-     */
-    function error(...args)
-    {
-        _log(console.error, ...args)
-    }
     //#endregion
     info("Loaded Script")
-
-    //#region Global General Utils
-    const getElementByXpath = unsafeWindow['getElementByXpath'] = function (/** @type {string} */ path)
-    {
-        return /** @type {Element} */ (document.evaluate(path, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue)
-    }
-    const sleepAsync = unsafeWindow['sleepAsync'] = async function (/** @type {number} */ timeMS)
-    {
-        return new Promise((resolve) =>
-        {
-            setTimeout(resolve, timeMS)
-        })
-    }
-    //#endregion
 
     const MainChatXpath = `//*[@id="app-mount"]/div[2]/div/div[1]/div/div[2]/div/div[1]/div/div/div[3]/div[2]/main/div[1]/div[1]`
     const SplitChatXpath = `//*[@id="app-mount"]/div[2]/div/div[1]/div/div[2]/div/div[1]/div/div/div[6]/div[2]/section/div[1]/div`
@@ -63,7 +13,6 @@
     // Chat Replay Controller Implementation
     class ChatReplayer
     {
-        loaded = false
         realTimeStart = null
         replaySpeed = 1
 
@@ -89,7 +38,6 @@
                 log("Waiting Elements")
                 await sleepAsync(1000)
             }
-            this.loaded = true
             log("Initialised")
         }
 
@@ -215,28 +163,48 @@
          */
         startReplays(chatLink, threadLink, speed = 1)
         {
-            log("Replaying", { chatLink, threadLink, speed })
-            const chatReplay = this.replayFromChat(chatLink, speed)
-            this.currentChatElement = chatReplay.element
-            if (threadLink)
+            try
             {
-                const threadReplay = this.replayFromChat(threadLink, speed)
-                this.currentThreadElement = threadReplay.element
-                this.scrollToChat(this.threadScroller, this.currentThreadElement)
-                this.update()
-                return { chatReplay, threadReplay }
+                log("Replaying", { chatLink, threadLink, speed })
+                const chatReplay = this.replayFromChat(chatLink, speed)
+
+                if (!this.chatScroller)
+                {
+                    throw "Chat scrolling pane not found"
+                }
+
+                this.currentChatElement = chatReplay.element
+                if (threadLink)
+                {
+                    const threadReplay = this.replayFromChat(threadLink, speed)
+
+                    if (!this.threadScroller)
+                    {
+                        throw "Thread split scrolling pane not found"
+                    }
+
+                    this.currentThreadElement = threadReplay.element
+                    this.scrollToChat(this.threadScroller, this.currentThreadElement)
+                    this.update()
+                    return { chatReplay, threadReplay }
+                }
+                else
+                {
+                    this.scrollToChat(this.chatScroller, this.currentChatElement)
+                    this.update()
+                    return { chatReplay }
+                }
             }
-            else
+            catch (e)
             {
-                this.scrollToChat(this.chatScroller, this.currentChatElement)
-                this.update()
-                return { chatReplay }
+                error(e)
+                return null
             }
         }
 
         stopReplays()
         {
-            if (!this.realTimeElapsedMS)
+            if (!this.realTimeStart)
             {
                 log("No replay is running")
             }
@@ -255,7 +223,7 @@
 
         /**
          * @param {() => Element} getter
-         * @param {{(value: Element): Element;}} setter
+         * @param {(value: Element) => Element} setter
          * @param {Element} scroller
          */
         updateRoutine(getter, setter, scroller)
@@ -325,6 +293,61 @@
         }
     }
 
-    // Global Variable Replay Controller
+    //#region Tagged Loggers
+    /**
+     * @param {any[]} args
+     */
+    function _log(logger = console.log, ...args)
+    {
+        logger("[ChatReplay]", ...args)
+    }
+    /**
+     * @param {any[]} args
+     */
+    function log(...args)
+    {
+        _log(console.log, ...args)
+    }
+    /**
+     * @param {any[]} args
+     */
+    function info(...args)
+    {
+        _log(console.info, ...args)
+    }
+    /**
+     * @param {any[]} args
+     */
+    function warn(...args)
+    {
+        _log(console.warn, ...args)
+    }
+    /**
+     * @param {any[]} args
+     */
+    function error(...args)
+    {
+        _log(console.error, ...args)
+    }
+
+    //#region Global General Utils
+    function getElementByXpath(/** @type {string} */ path)
+    {
+        return /** @type {Element} */ (document.evaluate(path, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue)
+    }
+    unsafeWindow['getElementByXpath'] = getElementByXpath
+
+    async function sleepAsync(/** @type {number} */ timeMS)
+    {
+        return new Promise((resolve) =>
+        {
+            setTimeout(resolve, timeMS)
+        })
+    }
+    unsafeWindow['sleepAsync'] = sleepAsync
+    //#endregion
+
+    //#region Global Variable Replay Controller
     unsafeWindow['chatReplay'] = new ChatReplayer();
+    //#endregion
 })();

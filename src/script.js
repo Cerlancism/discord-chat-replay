@@ -236,6 +236,10 @@
 
         stopReplays()
         {
+            if (!this.realTimeElapsedMS)
+            {
+                log("No replay is running")
+            }
             this.realTimeStart = null
         }
 

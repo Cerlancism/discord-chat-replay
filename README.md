@@ -11,7 +11,7 @@ Tampermonkey script on Chromium based browser.
 ## How to use
 Load as Tampermonkey script.  
 
-Go to the desired channel, clear unreads if exits (scroll to the latest message).   
+Go to the desired channel, clear unreads if exist (scroll to the latest message).   
 **Reload** the Discord WebApp using a message URL near the desired starting point for the replay.  
 
 In browser console:  

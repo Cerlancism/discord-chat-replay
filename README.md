@@ -11,9 +11,10 @@ Tampermonkey script on Chromium based browser.
 ## How to use
 Load as Tampermonkey script.  
 
+Go to the desired channel, clear unreads if exits (scroll to the latest message).   
 **Reload** the Discord WebApp using a message URL near the desired starting point for the replay.  
 
-In browser console:
+In browser console:  
 **Start Replays**
 ```js
 chatReplay.startReplays(<Main chat message URL>, <Split panel message URL (Optional)> | undefined, replaySpeed)

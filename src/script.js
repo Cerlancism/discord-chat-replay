@@ -17,8 +17,8 @@
     //#endregion
     info("Loaded Script")
 
-    const MainChatXpath = `//*[@id="app-mount"]/div[2]/div/div[1]/div/div[2]/div/div[1]/div/div/div[3]/div[2]/main/div[1]/div[1]`
-    const SplitChatXpath = `//*[@id="app-mount"]/div[2]/div/div[1]/div/div[2]/div/div[1]/div/div/div[6]/div[2]/section/div[1]/div`
+    const MainChatXpath = `//*[@id="app-mount"]/div[2]/div[1]/div[1]/div/div[2]/div/div/div/div/div[3]/div[2]/div/div[1]/main/div[1]/div[1]`
+    const SplitChatXpath = `//*[@id="app-mount"]/div[2]/div[1]/div[1]/div/div[2]/div/div/div/div/div[6]/div[2]/section/div[1]/div[1]`
 
     // Chat Replay Controller Implementation
     class ChatReplayer
